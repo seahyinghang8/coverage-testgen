@@ -22,8 +22,8 @@ jobs:
     coverage:
         runs-on: ubuntu-latest
         steps:
-          - name: Get Cover 
-            uses: orgoro/coverage@v3.2
+          - name: Python Coverage Testgen 
+            uses: seahyinghang8/coverage-testgen@test
             with:
                 coverageFile: path/to/coverage.xml
                 token: ${{ secrets.GITHUB_TOKEN }}
