@@ -34,8 +34,24 @@ export async function publishMessage(pr: number, message: string): Promise<void>
     })
 
     const add1 = `
-🌪 CGFT TestGen: Verifies that TodoManager sends reminders for overdue tasks.
+## 🌪 CGFT TestGen
+1. \`test_update_todo_in_list\`→ Verifies todo updates persist correctly
+2. \`test_send_overdue_reminders\`→ Verifies that TodoManager sends reminders for overdue tasks
 \`\`\`suggestion
+
+
+    def test_update_todo_in_list(self, manager: TodoManager) -> None:
+        manager.create_list("work")
+        todo_id = manager.add_todo("Test", "work", priority=1)
+        assert manager.update_todo(
+            todo_id, "work", title="Updated Test", priority=5)
+
+        updated_todo = manager.get_todo(todo_id, "work")
+        assert updated_todo is not None
+        assert updated_todo.title == "Updated Test"
+        assert updated_todo.priority == 5
+
+
     @patch.object(ReminderService, 'send_reminders_for_overdue')
     def test_send_overdue_reminders(self, mock_send_reminders: MagicMock, manager: TodoManager) -> None:
         # Setup: Create some overdue tasks
@@ -55,27 +71,29 @@ export async function publishMessage(pr: number, message: string): Promise<void>
       ...context.repo,
       pull_number: pr,
       body: add1,
-      commit_id: '50ea48d0219c38cae5c042849fa0dad87bee6178',
+      commit_id: 'c038efc7fef41b02d9afcbf621404d5070cbdbbf',
       path: 'tests/test_todo.py',
-      line: 144,
+      line: 133,
       side: 'RIGHT'
     })
 
     const add2 = `
-🌪 CGFT TestGen: Verifies ReminderService handles failed reminder API requests + Verifies overdue reminders are sent successfully
+## 🌪 CGFT TestGen
+1. \`test_send_reminder_failure\` → Verifies ReminderService handles failed reminder API requests
+2. \`test_send_reminders_for_overdue\` → Verifies overdue reminders are sent successfully
 \`\`\`suggestion
 
 
-@patch("todo.reminder_service.requests.post")
-def test_send_reminder_failure(self, mock_post: MagicMock, sample_todo: Todo) -> None:
-    # Simulate a failure API response
-    mock_post.return_value.status_code = 400
+    @patch("todo.reminder_service.requests.post")
+    def test_send_reminder_failure(self, mock_post: MagicMock, sample_todo: Todo) -> None:
+        # Simulate a failure API response
+        mock_post.return_value.status_code = 400
 
-    reminder_service = ReminderService(
-        api_url="https://dummy.api.com", api_key="test-api-key")
-    result = reminder_service.send_reminder(sample_todo)
+        reminder_service = ReminderService(
+            api_url="https://dummy.api.com", api_key="test-api-key")
+        result = reminder_service.send_reminder(sample_todo)
 
-    assert result is False
+        assert result is False
 
 
     @patch("todo.reminder_service.requests.post")
@@ -96,9 +114,9 @@ def test_send_reminder_failure(self, mock_post: MagicMock, sample_todo: Todo) ->
       ...context.repo,
       pull_number: pr,
       body: add2,
-      commit_id: '50ea48d0219c38cae5c042849fa0dad87bee6178',
+      commit_id: 'c038efc7fef41b02d9afcbf621404d5070cbdbbf',
       path: 'tests/test_todo.py',
-      line: 171,
+      line: 161,
       side: 'RIGHT'
     })
   }
