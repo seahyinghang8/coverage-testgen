@@ -424,17 +424,23 @@ function publishMessage(pr, message) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = TITLE.concat(message);
         core.summary.addRaw(body).write();
-        const comments = yield client_1.octokit.rest.issues.listComments(Object.assign(Object.assign({}, github_1.context.repo), { issue_number: pr }));
-        const exist = comments.data.find(commnet => {
-            var _a;
-            return (_a = commnet.body) === null || _a === void 0 ? void 0 : _a.startsWith(TITLE);
-        });
-        if (exist) {
-            yield client_1.octokit.rest.issues.updateComment(Object.assign(Object.assign({}, github_1.context.repo), { issue_number: pr, comment_id: exist.id, body }));
-        }
-        else {
-            yield client_1.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github_1.context.repo), { issue_number: pr, body }));
-        }
+        // const comments = await octokit.rest.issues.listComments({
+        //   ...context.repo,
+        //   issue_number: pr
+        // })
+        // const exist = comments.data.find(commnet => {
+        //   return commnet.body?.startsWith(TITLE)
+        // })
+        // if (exist) {
+        //   await octokit.rest.issues.updateComment({
+        //     ...context.repo,
+        //     issue_number: pr,
+        //     comment_id: exist.id,
+        //     body
+        //   })
+        // } else {
+        yield client_1.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github_1.context.repo), { issue_number: pr, body }));
+        // }
     });
 }
 exports.publishMessage = publishMessage;
