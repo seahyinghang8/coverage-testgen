@@ -5,34 +5,60 @@ import {formatAverageTable, formatFilesTable, toPercent} from './format'
 import {context} from '@actions/github'
 import {octokit} from './client'
 
-const TITLE = `# ☂️ Python Coverage with TestGen 🐍`
+const TITLE = `# ☂️ Python Coverage`
 
 export async function publishMessage(pr: number, message: string): Promise<void> {
   const body = TITLE.concat(message)
   core.summary.addRaw(body).write()
 
-  // const comments = await octokit.rest.issues.listComments({
-  //   ...context.repo,
-  //   issue_number: pr
-  // })
-  // const exist = comments.data.find(commnet => {
-  //   return commnet.body?.startsWith(TITLE)
-  // })
-
-  // if (exist) {
-  //   await octokit.rest.issues.updateComment({
-  //     ...context.repo,
-  //     issue_number: pr,
-  //     comment_id: exist.id,
-  //     body
-  //   })
-  // } else {
-  await octokit.rest.issues.createComment({
+  const comments = await octokit.rest.issues.listComments({
     ...context.repo,
-    issue_number: pr,
-    body
+    issue_number: pr
   })
-  // }
+  const exist = comments.data.find(commnet => {
+    return commnet.body?.startsWith(TITLE)
+  })
+
+  if (exist) {
+    await octokit.rest.issues.updateComment({
+      ...context.repo,
+      issue_number: pr,
+      comment_id: exist.id,
+      body
+    })
+  } else {
+    await octokit.rest.issues.createComment({
+      ...context.repo,
+      issue_number: pr,
+      body
+    })
+
+    const reviewContent = `
+    \`\`\`suggestion
+    def test_move_todo(self, manager: TodoManager) -> None:
+        manager.create_list("work")
+        manager.create_list("personal")
+
+        todo_id = manager.add_todo("Test", "work")
+        assert todo_id is not None
+        assert manager.move_todo(todo_id, "work", "personal")
+
+        assert manager.get_todo(todo_id, "work") is None
+        assert manager.get_todo(todo_id, "personal") is not None
+\`\`\`
+    `
+    octokit.rest.pulls.createReviewComment({
+      ...context.repo,
+      pull_number: pr,
+      body: reviewContent,
+      commit_id: '76e0478c29d8ccfe5bde368fcf4f57872f9ca435',
+      path: 'tests/test_todo.py',
+      start_line: 104,
+      start_side: 'RIGHT',
+      line: 113,
+      side: 'RIGHT'
+    })
+  }
 }
 
 export function scorePr(filesCover: FilesCoverage): boolean {
