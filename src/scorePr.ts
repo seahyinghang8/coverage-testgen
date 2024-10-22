@@ -34,7 +34,7 @@ export async function publishMessage(pr: number, message: string): Promise<void>
     })
 
     const add1 = `
-## 🌪 CGFT TestGen
+# <img src="https://www.cgft.io/static/favicons/apple-touch-icon.png" alt="CGFT" width="50"/> TestGen
 1. \`test_update_todo_in_list\`→ Verifies todo updates persist correctly
 2. \`test_send_overdue_reminders\`→ Verifies that TodoManager sends reminders for overdue tasks
 \`\`\`suggestion
@@ -78,7 +78,7 @@ export async function publishMessage(pr: number, message: string): Promise<void>
     })
 
     const add2 = `
-## 🌪 CGFT TestGen
+# <img src="https://www.cgft.io/static/favicons/apple-touch-icon.png" alt="CGFT" width="50"/> TestGen
 1. \`test_send_reminder_failure\` → Verifies ReminderService handles failed reminder API requests
 2. \`test_send_reminders_for_overdue\` → Verifies overdue reminders are sent successfully
 \`\`\`suggestion
