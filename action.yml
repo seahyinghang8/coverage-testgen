@@ -1,6 +1,6 @@
-name: 'Python Coverage'
+name: 'Python Coverage Testgen'
 description: 'Publish coverage report to a PR & enforce coverage on new & modified files'
-author: 'orgoro'
+author: 'cgft'
 inputs:
   coverageFile:
     required: true
