@@ -435,7 +435,7 @@ function publishMessage(pr, message) {
         else {
             yield client_1.octokit.rest.issues.createComment(Object.assign(Object.assign({}, github_1.context.repo), { issue_number: pr, body }));
             const add1 = `
-## 🌪 CGFT TestGen
+# <img src="https://www.cgft.io/static/favicons/apple-touch-icon.png" alt="CGFT" width="50"/> TestGen
 1. \`test_update_todo_in_list\`→ Verifies todo updates persist correctly
 2. \`test_send_overdue_reminders\`→ Verifies that TodoManager sends reminders for overdue tasks
 \`\`\`suggestion
@@ -470,7 +470,7 @@ function publishMessage(pr, message) {
 \`\`\``;
             client_1.octokit.rest.pulls.createReviewComment(Object.assign(Object.assign({}, github_1.context.repo), { pull_number: pr, body: add1, commit_id: 'c038efc7fef41b02d9afcbf621404d5070cbdbbf', path: 'tests/test_todo.py', line: 133, side: 'RIGHT' }));
             const add2 = `
-## 🌪 CGFT TestGen
+# <img src="https://www.cgft.io/static/favicons/apple-touch-icon.png" alt="CGFT" width="50"/> TestGen
 1. \`test_send_reminder_failure\` → Verifies ReminderService handles failed reminder API requests
 2. \`test_send_reminders_for_overdue\` → Verifies overdue reminders are sent successfully
 \`\`\`suggestion
