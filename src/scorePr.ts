@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 
 // import {FilesCoverage} from './coverage'
-import {formatAverageTable, formatFilesTable, toPercent} from './format'
+import {formatAverageTable} from './format'
 import {context} from '@actions/github'
 import {octokit} from './client'
 
