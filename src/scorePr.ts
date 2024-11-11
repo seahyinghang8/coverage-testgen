@@ -66,12 +66,12 @@ export async function scorePr(): Promise<boolean> {
   })
 
   let message = ''
-  const passOverall = !exist
+  const passOverall = !!exist
   const cover = {
     ratio: 0.75,
-    covered: exist ? 80663 : 80649,
+    covered: passOverall ? 80663 : 80649,
     total: 107536,
-    pass: !exist,
+    pass: passOverall,
     threshold: 0.75
   }
 

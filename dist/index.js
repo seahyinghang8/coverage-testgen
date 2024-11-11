@@ -275,12 +275,12 @@ function scorePr() {
             return (_a = comment.body) === null || _a === void 0 ? void 0 : _a.startsWith(TITLE);
         });
         let message = '';
-        const passOverall = !exist;
+        const passOverall = !!exist;
         const cover = {
             ratio: 0.75,
-            covered: exist ? 80663 : 80649,
+            covered: passOverall ? 80663 : 80649,
             total: 107536,
-            pass: !exist,
+            pass: passOverall,
             threshold: 0.75
         };
         const { coverTable: avgCoverTable } = (0, format_1.formatAverageTable)(cover);
