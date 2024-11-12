@@ -80,7 +80,7 @@ export async function scorePr(): Promise<boolean> {
   message = message.concat(`\n## Overall Coverage\n${avgCoverTable}`)
 
   const modifiedCover: Coverage[] = [
-    {file: 'SignalServiceKit/Groups/GroupV2Params.swift', cover: passOverall ? 0.72 : 0.78, pass: passOverall},
+    {file: 'SignalServiceKit/Groups/GroupV2Params.swift', cover: passOverall ? 0.78 : 0.72, pass: passOverall},
     {file: 'SignalServiceKit/Groups/GroupsV2Impl.swift', cover: passOverall ? 0.75 : 0.74, pass: passOverall},
     {file: 'SignalServiceKit/Groups/TSGroupModel.h', cover: 1.0, pass: true},
     {file: 'SignalServiceKit/Groups/TSGroupModel.m', cover: 0.96, pass: true}
