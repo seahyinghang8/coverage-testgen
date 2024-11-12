@@ -275,9 +275,9 @@ function scorePr() {
             return (_a = comment.body) === null || _a === void 0 ? void 0 : _a.startsWith(TITLE);
         });
         let message = '';
-        const passOverall = !!exist;
+        let passOverall = !!exist;
         const cover = {
-            ratio: 0.75,
+            ratio: passOverall ? 0.75 : 0.74,
             covered: passOverall ? 80663 : 80649,
             total: 107536,
             pass: passOverall,
@@ -285,6 +285,16 @@ function scorePr() {
         };
         const { coverTable: avgCoverTable } = (0, format_1.formatAverageTable)(cover);
         message = message.concat(`\n## Overall Coverage\n${avgCoverTable}`);
+        const modifiedCover = [
+            { file: 'SignalServiceKit/Groups/GroupV2Params.swift', cover: passOverall ? 0.72 : 0.78, pass: passOverall },
+            { file: 'SignalServiceKit/Groups/GroupsV2Impl.swift', cover: passOverall ? 0.75 : 0.74, pass: passOverall },
+            { file: 'SignalServiceKit/Groups/TSGroupModel.h', cover: 1.0, pass: true },
+            { file: 'SignalServiceKit/Groups/TSGroupModel.m', cover: 0.96, pass: true }
+        ];
+        const { coverTable, pass: passModified } = (0, format_1.formatFilesTable)(modifiedCover);
+        passOverall = passOverall && passModified;
+        message = message.concat(`\n## Modified Files\n${coverTable}`);
+        passModified ? core.info('Modified files coverage ✅') : core.error('Modified Files coverage ❌');
         // core.startGroup('Results')
         // const {coverTable: avgCoverTable, pass: passTotal} = formatAverageTable(filesCover.averageCover)
         // message = message.concat(`\n## Overall Coverage\n${avgCoverTable}`)

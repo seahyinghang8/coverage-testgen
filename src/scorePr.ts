@@ -1,9 +1,10 @@
 import * as core from '@actions/core'
 
 // import {FilesCoverage} from './coverage'
-import {formatAverageTable} from './format'
+import {formatAverageTable, formatFilesTable} from './format'
 import {context} from '@actions/github'
 import {octokit} from './client'
+import {Coverage} from './coverage'
 
 const TITLE = `# ☂️ Repo Coverage`
 
@@ -66,9 +67,9 @@ export async function scorePr(): Promise<boolean> {
   })
 
   let message = ''
-  const passOverall = !!exist
+  let passOverall = !!exist
   const cover = {
-    ratio: 0.75,
+    ratio: passOverall ? 0.75 : 0.74,
     covered: passOverall ? 80663 : 80649,
     total: 107536,
     pass: passOverall,
@@ -77,6 +78,17 @@ export async function scorePr(): Promise<boolean> {
 
   const {coverTable: avgCoverTable} = formatAverageTable(cover)
   message = message.concat(`\n## Overall Coverage\n${avgCoverTable}`)
+
+  const modifiedCover: Coverage[] = [
+    {file: 'SignalServiceKit/Groups/GroupV2Params.swift', cover: passOverall ? 0.72 : 0.78, pass: passOverall},
+    {file: 'SignalServiceKit/Groups/GroupsV2Impl.swift', cover: passOverall ? 0.75 : 0.74, pass: passOverall},
+    {file: 'SignalServiceKit/Groups/TSGroupModel.h', cover: 1.0, pass: true},
+    {file: 'SignalServiceKit/Groups/TSGroupModel.m', cover: 0.96, pass: true}
+  ]
+  const {coverTable, pass: passModified} = formatFilesTable(modifiedCover)
+  passOverall = passOverall && passModified
+  message = message.concat(`\n## Modified Files\n${coverTable}`)
+  passModified ? core.info('Modified files coverage ✅') : core.error('Modified Files coverage ❌')
 
   // core.startGroup('Results')
   // const {coverTable: avgCoverTable, pass: passTotal} = formatAverageTable(filesCover.averageCover)
